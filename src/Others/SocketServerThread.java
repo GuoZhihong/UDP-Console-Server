@@ -8,12 +8,9 @@ import java.net.SocketAddress;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
-import static java.nio.channels.SelectionKey.OP_READ;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SocketServerThread extends Thread{
@@ -23,8 +20,6 @@ public class SocketServerThread extends Thread{
     private String directoryPath;
     private int port;
     private HashMap<String,String> query = new HashMap<>();
-    private LinkedList<Packet> window;
-    private boolean isConnected = false;
 
     public void setPort(int port) {
         this.port = port;
@@ -38,7 +33,6 @@ public class SocketServerThread extends Thread{
         this.directoryPath = directoryPath;
     }
     public SocketServerThread(DatagramChannel datagramChannel,SocketAddress routerAddress) {
-        this.window = new LinkedList<Packet>();
         this.routerAddress = routerAddress;
         this.datagramChannel = datagramChannel;
         this.debugMessage = false;
@@ -80,11 +74,12 @@ public class SocketServerThread extends Thread{
         while (true) {
             ByteBuffer byteBuffer = ByteBuffer.allocate(Packet.MAX_LEN);
             byteBuffer.clear();
-            this.datagramChannel.receive(byteBuffer);
+            datagramChannel.receive(byteBuffer);
             byteBuffer.flip();
             Packet packet = Packet.fromBuffer(byteBuffer);
 
             if(packet.getType() == 0) {
+                System.out.println("Three-way handshake is done, server is connected");
                 packet.toBuilder().setType(1);
                 String payload = new String(packet.getPayload(), UTF_8);
 
@@ -110,14 +105,10 @@ public class SocketServerThread extends Thread{
 
         System.out.println("Handshaking #1 SYN packet has received");
         System.out.println("Message is : " + new String(packet.getPayload(), StandardCharsets.UTF_8));
-
         String testString = "Hi";
         Packet response = packet.toBuilder().setSequenceNumber(packet.getSequenceNumber() + 1).setType(3).setPayload(testString.getBytes()).create();
         this.datagramChannel.send(response.toBuffer(), routerAddress);
         System.out.println("Handshaking #2 SYN packet has sent out");
-
-        this.isConnected = true;
-        System.out.println("Three-way handshake is done, server is connected");
 
     }
 
