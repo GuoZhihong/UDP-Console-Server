@@ -1,4 +1,5 @@
 Server Side:  
+
               Assignment 2&3:   httpfs -d D:/onedrive/COMP/COMP445/lab/A3
                                 httpfs -v -d D:/onedrive/COMP/COMP445/lab/A3
                                 httpfs -v -p 8080 -d D:/onedrive/COMP/COMP445/lab/A3
@@ -24,4 +25,5 @@ Client side :
                 httpc get -v 'http://localhost:8007/get?course=networking&assignment=1'
                 httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://localhost:8007/post'
 
-Router  :       router --port=3000 --drop-rate=0.2 --max-delay=10ms --seed=1
+Router  :       
+              router --port=3000 --drop-rate=0.2 --max-delay=10ms --seed=1
