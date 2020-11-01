@@ -1,19 +1,12 @@
-Assignment 1:
-Notice : for post with inline data example:
-I used CURL is httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://httpbin.org/post'
-instead of httpc post -h Content-Type:application/json --d '{"Assignment": 1}' http://httpbin.org/post
-to select right URL,
-so without '' in URL ,all of command line will not work properly.
-
-
-
-
-Server Side:  Assignment 2&3:   httpfs -d D:/onedrive/COMP/COMP445/lab/A3
+Server Side:  
+              Assignment 2&3:   httpfs -d D:/onedrive/COMP/COMP445/lab/A3
                                 httpfs -v -d D:/onedrive/COMP/COMP445/lab/A3
                                 httpfs -v -p 8080 -d D:/onedrive/COMP/COMP445/lab/A3
 
 
-Client side :A1:httpc get -v 'http://localhost/get?course=networking&assignment=1'
+Client side :
+
+             A1:httpc get -v 'http://localhost/get?course=networking&assignment=1'
                 httpc post -h Content-Type:application/json --d '{"Assignment": 1}' 'http://localhost/post'
 
 
